@@ -1,0 +1,90 @@
+const bcrypt = require("bcryptjs");
+const User = require("../models/userModel");
+const jwt = require("jsonwebtoken");
+const cookie = require('cookie-parser');
+
+const register = async (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Please fill all the fields" });
+  }
+
+  try {
+    const existingUser = await User.findOne({email});
+    if(existingUser)
+    {
+        return res.status(400).json({success: false, message: "User already exists!"});
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ name, email, password: hashedPassword });
+    await user.save(); // user creating and saving
+
+    const token = jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:'7d'});
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production' ,
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    }) // sets a cookie in the user's browser,stores data (like a token) in the browser for future use.
+    return res.json({success:true});
+
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const login= async (req,res)=>{
+  const {email, password} = req.body;
+  if(!email || !password)
+  {
+    return res.status(400).json({success:false, message:"Please fill all the fields"});
+  }
+  try{
+     const existinguser =await User.findOne({email});
+     console.log(existinguser._id);
+     if(!existinguser)
+     {
+      return res.status(400).json({success:false, message:"User not found!"});
+     }
+     const isMatching = await bcrypt.compare(password, existinguser.password);
+     if(!isMatching)
+     {
+      return res.status(400).json({success:false, message:"Invalid credentials!"});
+     }
+      const token = jwt.sign({id:existinguser._id},process.env.JWT_SECRET,{expiresIn:'7d'});
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production' ,
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    }) // sets a cookie in the user's browser,stores data (like a token) in the browser for future use.
+    return res.json({success:true});
+
+  }catch(error)
+  {
+       return res.status(500).json({success:false, message:error.message});
+  }
+}
+
+const logout = async (req,res) =>
+{
+  try{
+       res.clearCookie('token',{
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production' ,
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+       });
+       return res.json({success:true});
+  }catch(error)
+  {
+    return res.status(500).json({success:false, message:error.message});
+  }
+}
+
+module.exports = {
+  register,
+  login,
+  logout
+};
