@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const cookie = require('cookie-parser');
+const transporter = require("../config/nodeMailerConfig"); // importing transporter for sending emails via nodemailer
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -28,6 +29,14 @@ const register = async (req, res) => {
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     }) // sets a cookie in the user's browser,stores data (like a token) in the browser for future use.
+    // Send a welcome email
+    const mailOptions = {
+        from: process.env.SENDER_EMAIL,
+        to: email,
+        subject: "Welcome to Techphantoms",
+        text: `Hello ${name},\n\nThank you for registering! Your account has been created with email id: ${email}`
+    };
+     transporter.sendMail(mailOptions); // sending email using nodemailer
     return res.json({success:true});
 
   } catch (error) {
@@ -83,8 +92,19 @@ const logout = async (req,res) =>
   }
 }
 
+const deleteAllUsers = async (req,res) =>
+{
+  try {
+    await User.deleteMany({});
+    return res.json({ success: true, message: "All users deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+}
+
 module.exports = {
   register,
   login,
+  deleteAllUsers,
   logout
 };
