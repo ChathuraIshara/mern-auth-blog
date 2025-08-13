@@ -1,3 +1,7 @@
+// Simple function to print hello world
+function printHelloWorld() {
+  console.log('hello world');
+}
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
