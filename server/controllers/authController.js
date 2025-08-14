@@ -141,6 +141,7 @@ const sendVerifyOtp = async (req, res) => {
   }
 };
 
+// Verify the user otp
 const verifyOtp = async (req, res) => {
   const { userId, otp } = req.body;
   try {
@@ -170,6 +171,18 @@ const verifyOtp = async (req, res) => {
   }
 };
 
+// Check suer is authenticated
+const isAuthenticated = async (req, res) =>
+{
+  try{
+    return res.status(200).json({ success: true, message: "User is authenticated" });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+
+
 module.exports = {
   register,
   login,
@@ -177,4 +190,5 @@ module.exports = {
   logout,
   sendVerifyOtp,
   verifyOtp,
+  isAuthenticated
 };
