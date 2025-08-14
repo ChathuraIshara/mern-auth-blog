@@ -59,7 +59,6 @@ const login = async (req, res) => {
   }
   try {
     const existinguser = await User.findOne({ email });
-    console.log(existinguser._id);
     if (!existinguser) {
       return res
         .status(400)
