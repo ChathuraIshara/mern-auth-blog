@@ -132,7 +132,6 @@ const sendVerifyOtp = async (req, res) => {
       subject: "Verify your email",
       text: `Your OTP is ${otp}. It is valid for 24 hours.`,
     };
-    console.log("mailOptions:", mailOptions);
     transporter.sendMail(mailOptions);
     return res
       .status(200)
