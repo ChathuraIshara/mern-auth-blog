@@ -6,7 +6,7 @@ import EmailVerify from "./pages/EmailVerify";
 import PasswordReset from "./pages/PasswordReset";  
 
 const App = () => {
-  return <div className="p-4">
+  return <div className="">
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home />} />

@@ -7,7 +7,7 @@ const Header = () => {
         <h1 className='flex items-center gap-3 text-xl sm:text-3xl font-medium mb-2'>Hey blogger <img src={assets.hand_wave} className='w-8 aspect-square'></img></h1>
         <h2 className='text-3xl sm:text-5xl font-semibold mb-4'>Welcome to our app</h2>
         <p className='mb-8 max-w-md'>Here you can share your thoughts and ideas with the world and join with the universe.</p>
-        <button className='border border-gray-500 rounded-full py-2 px-4 hover:bg-gray-100 transition-all'>Get Started</button>
+        <button className='border border-gray-500 text-gray-800 rounded-full py-2 px-4 hover:bg-gray-100 transition-all'>Get Started</button>
     </div>
   )
 }
