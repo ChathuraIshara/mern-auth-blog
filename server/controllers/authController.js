@@ -189,7 +189,7 @@ const sendResetOtp = async (req, res)=>
     return res.json({ success: false, message: "Email is required" });
   }
   try{
-    const user = User.findOne({email});
+    const user = await User.findOne({email});
     if(!user)
     {
       return res.status(404).json({ success: false, message: "User not found" });
@@ -197,7 +197,6 @@ const sendResetOtp = async (req, res)=>
     const otp = Math.floor(100000 + Math.random() * 900000); // generate a 6-digit OTP
     user.resetOtp = otp.toString();
     user.resetOtpExpiresAt = Date.now() + 15 * 60 * 1000; // OTP expires in  15 minutes
-
     await user.save();
 
     const mailOptions = {
@@ -207,6 +206,7 @@ const sendResetOtp = async (req, res)=>
       text: `Your OTP for resetting your password is ${otp}. Use this OTP to proceed with resetting your password.`,
     };
     transporter.sendMail(mailOptions);
+    return res.status(200).json({ success: true, message: "OTP sent to your email" });
 
   }catch(error) {
     return res.status(500).json({ success: false, message: error.message });
