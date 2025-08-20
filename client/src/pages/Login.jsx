@@ -1,29 +1,93 @@
-import React from 'react'
+import React from "react";
+import { useState } from "react";
+import { assets } from "../assets/assets";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [state, setState] = useState("Sign Up");
+  const [name,setName] = useState("");
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("");
+
+  const navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] text-gray-800">
-      <h2 className="text-3xl font-bold mb-4">Login to Your Account</h2>
-      <form className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter your email" />
-        </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-            Password
-          </label>
-          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Enter your password" />
-        </div>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full transition-colors duration-200" type="submit">
-          Login
-        </button>
-      </form>
-      <p className="text-sm text-gray-600">Don't have an account? <a href="/register" className="text-blue-600 hover:underline">Register</a></p>
+    <div className="flex flex-col items-center justify-center min-h-screen px-6 sm:px-0 bg-gradient-to-br from-blue-200 to-purple-400">
+      <img
+        onClick={()=>{navigate('/')}}
+        src={assets.logo}
+        alt=""
+        className="absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer"
+      ></img>
+      <div className="bg-slate-900 p-10 rounded-lg shadow-lg w-full sm:w-96 text-indigo-300 text-sm">
+        <h2 className="text-3xl font-semibold text-white text-center mb-3">
+          {state == "Sign Up" ? "Create Account" : "Login"}
+        </h2>
+        <p className="text-center mb-3 text-sm">
+          {state == "Sign Up"
+            ? "Create Your Account"
+            : "Login to your account!"}
+        </p>
+        <form>
+          {state == "Sign Up" && (
+            <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+              <img src={assets.person_icon}></img>
+              <input
+                className="bg-transparent outline-none text-white"
+                type="text"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              ></input>
+            </div>
+          )}
+          <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+            <img src={assets.mail_icon}></img>
+            <input
+              className="bg-transparent outline-none text-white"
+              type="email"
+              placeholder="Email id"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              required
+            ></input>
+          </div>
+          <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+            <img src={assets.lock_icon}></img>
+            <input
+              className="bg-transparent outline-none text-white"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            ></input>
+          </div>
+          <p onClick={()=>{navigate('/password-reset')}} className="mb-4 text-indigo-500 cursor-pointer">
+            Forgot password?
+          </p>
+          <button className="w-full rounded-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white font-medium">
+            {state}
+          </button>
+        </form>
+        {state == "Sign Up" ? (
+          <p className="text-gray-400 text-center text-xs mt-4">
+            Already have an account?{" "}
+            <span onClick={()=>{setState('Login')}} className="text-blue-400 cursor-pointer underline">
+              Login here
+            </span>
+          </p>
+        ) : (
+          <p className="text-gray-400 text-center text-xs mt-4">
+            Don't have an account?{" "}
+            <span onClick={()=>{setState('Sign Up')}} className="text-blue-400 cursor-pointer underline">
+              Sign up
+            </span>
+          </p>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default Login;
