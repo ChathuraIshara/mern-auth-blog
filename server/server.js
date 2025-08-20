@@ -15,7 +15,9 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser()) //to send cookies as the response of a request
-app.use(cors({credentials:true}))
+
+const allowedOrigins = ['http://localhost:5173']
+app.use(cors({origin: allowedOrigins, credentials:true}))
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);

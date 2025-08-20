@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
+import { AppContent } from "../context/AppContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [state, setState] = useState("Sign Up");
@@ -10,6 +13,47 @@ const Login = () => {
   const [password,setPassword] = useState("");
 
   const navigate = useNavigate();
+  const {backendUrl, setIsLoggedIn} = useContext(AppContent)
+  
+  const handleSubmit = async (e) =>{
+    try {
+      e.preventDefault(); // To prevent default submision of js,when reload the page
+      axios.defaults.withCredentials = true; //tells axios to include cookies
+      if(state == 'Sign Up')
+      {
+         const {data} = await axios.post(backendUrl+'/api/auth/register',{
+          name,email,password
+         })
+         if(data.success)
+         {
+          setIsLoggedIn(true);
+          navigate('/')
+          toast.success('successfully Logged In!')
+         }
+         else{
+          toast.error(data.message); // Show error message if registration fails
+         }
+      }
+      else{
+        const {data}= await axios.post(backendUrl+'/api/auth/login',{
+          email,password
+         })
+         if(data.success)
+         {
+          setIsLoggedIn(true);
+          navigate('/')
+          toast.success('successfully Logged In!')
+         }
+         else{
+          toast.error(data.message); // Show error message if registration fails
+         }
+      }
+    } catch (error) {
+      toast.error(data.message);
+    }
+  }
+
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 sm:px-0 bg-gradient-to-br from-blue-200 to-purple-400">
       <img
@@ -27,7 +71,7 @@ const Login = () => {
             ? "Create Your Account"
             : "Login to your account!"}
         </p>
-        <form>
+        <form onSubmit={handleSubmit}>
           {state == "Sign Up" && (
             <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
               <img src={assets.person_icon}></img>

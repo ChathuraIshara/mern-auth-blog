@@ -12,7 +12,6 @@ const register = async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res
-      .status(400)
       .json({ success: false, message: "Please fill all the fields" });
   }
 
@@ -20,7 +19,6 @@ const register = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
-        .status(400)
         .json({ success: false, message: "User already exists!" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -54,20 +52,17 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res
-      .status(400)
       .json({ success: false, message: "Please fill all the fields" });
   }
   try {
     const existinguser = await User.findOne({ email });
     if (!existinguser) {
       return res
-        .status(400)
         .json({ success: false, message: "User not found!" });
     }
     const isMatching = await bcrypt.compare(password, existinguser.password);
     if (!isMatching) {
       return res
-        .status(400)
         .json({ success: false, message: "Invalid credentials!" });
     }
     const token = jwt.sign({ id: existinguser._id }, process.env.JWT_SECRET, {

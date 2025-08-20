@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { useState } from "react";
 
-const AppContent = createContext();
+export const AppContent = createContext();
 
 export const AppContextProvider = (props)=>{
 
@@ -9,7 +9,7 @@ export const AppContextProvider = (props)=>{
     const [isLoggedIn,setIsLoggedIn] = useState(false)  
     const [userData,setUserData] = useState(null)
 
-    const values = {
+    const value = {
         backendUrl,
         isLoggedIn,
         userData,
@@ -17,7 +17,7 @@ export const AppContextProvider = (props)=>{
         setUserData
     }
     return (
-        <AppContent.Provider  value={{values}}>
+        <AppContent.Provider  value={value}>
             {props.children}
         </AppContent.Provider>
     )
