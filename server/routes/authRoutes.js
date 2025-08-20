@@ -11,7 +11,7 @@ authRouter.get('/hello',(req,res)=>{res.json({message:"Hello from auth route!"})
 authRouter.delete('/delete-all-users', deleteAllUsers);
 authRouter.post('/send-verify-otp', userAuth,sendVerifyOtp);
 authRouter.post('/verify-account', userAuth,verifyOtp);
-authRouter.post('/is-auth', userAuth,isAuthenticated);
+authRouter.get('/is-auth', userAuth,isAuthenticated);
 authRouter.post('/send-reset-otp',sendResetOtp);
 authRouter.post('/reset-password',resetPassword);
 

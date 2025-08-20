@@ -32,7 +32,7 @@ const Login = () => {
           toast.success('successfully Logged In!')
          }
          else{
-          toast.error(data.message); // Show error message if registration fails
+          toast.error(error.message); // Show error message if registration fails
          }
       }
       else{
@@ -51,7 +51,7 @@ const Login = () => {
          }
       }
     } catch (error) {
-      toast.error(data.message);
+      toast.error(error.message);
     }
   }
 
