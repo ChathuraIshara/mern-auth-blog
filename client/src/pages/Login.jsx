@@ -13,7 +13,7 @@ const Login = () => {
   const [password,setPassword] = useState("");
 
   const navigate = useNavigate();
-  const {backendUrl, setIsLoggedIn} = useContext(AppContent)
+  const {backendUrl, setIsLoggedIn,getUserData} = useContext(AppContent)
   
   const handleSubmit = async (e) =>{
     try {
@@ -27,6 +27,7 @@ const Login = () => {
          if(data.success)
          {
           setIsLoggedIn(true);
+          getUserData();
           navigate('/')
           toast.success('successfully Logged In!')
          }
@@ -41,6 +42,7 @@ const Login = () => {
          if(data.success)
          {
           setIsLoggedIn(true);
+          getUserData();
           navigate('/')
           toast.success('successfully Logged In!')
          }
