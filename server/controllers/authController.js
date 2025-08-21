@@ -7,6 +7,7 @@ const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const cookie = require("cookie-parser");
 const transporter = require("../config/nodeMailerConfig"); // importing transporter for sending emails via nodemailer
+const  { EMAIL_VERIFY_TEMPLATE,PASSWORD_RESET_TEMPLATE } = require('../config/emailTemplate'); // importing email templates
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -124,7 +125,8 @@ const sendVerifyOtp = async (req, res) => {
       from: process.env.SENDER_EMAIL,
       to: user.email,
       subject: "Verify your email",
-      text: `Your OTP is ${otp}. It is valid for 24 hours.`,
+      //text: `Your OTP is ${otp}. It is valid for 24 hours.`,
+      html:EMAIL_VERIFY_TEMPLATE.replace("{{otp}}",otp).replace("{{email}}",email)
     };
     transporter.sendMail(mailOptions);
     return res
@@ -198,7 +200,8 @@ const sendResetOtp = async (req, res)=>
       from: process.env.SENDER_EMAIL,
       to: user.email,
       subject: "Password Reset Otp",
-      text: `Your OTP for resetting your password is ${otp}. Use this OTP to proceed with resetting your password.`,
+      //text: `Your OTP for resetting your password is ${otp}. Use this OTP to proceed with resetting your password.`,
+      html:PASSWORD_RESET_TEMPLATE.replace("{{otp}}",otp).replace("{{email}}",email)
     };
     transporter.sendMail(mailOptions);
     return res.status(200).json({ success: true, message: "OTP sent to your email" });
