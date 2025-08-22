@@ -11,6 +11,7 @@ export const AppContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [blogCount,setBlogCount] = useState(0);
 
   const getUserData = async () => {
     try {
@@ -51,7 +52,9 @@ export const AppContextProvider = (props) => {
     userData,
     setIsLoggedIn,
     setUserData,
-    getUserData
+    getUserData,
+    blogCount,
+    setBlogCount
   };
   return (
     <AppContent.Provider value={value}>{props.children}</AppContent.Provider>

@@ -4,7 +4,8 @@ const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const connectDb = require('./config/db');
 const authRouter = require('./routes/authRoutes');
-const userRouter = require('./routes/userRoutes')
+const userRouter = require('./routes/userRoutes');
+const blogRouter = require('./routes/blogRoutes');
 
 dotenv.config();
 connectDb();
@@ -21,6 +22,7 @@ app.use(cors({origin: allowedOrigins, credentials:true}))
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+app.use('/api/blogs', blogRouter);
 
 
 app.listen(port, () => {

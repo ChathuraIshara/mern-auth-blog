@@ -28,7 +28,7 @@ const Login = () => {
          {
           setIsLoggedIn(true);
           getUserData();
-          navigate('/')
+          navigate('/All-blogs')
           toast.success('successfully Logged In!')
          }
          else{
@@ -43,7 +43,7 @@ const Login = () => {
          {
           setIsLoggedIn(true);
           getUserData();
-          navigate('/')
+          navigate('/All-blogs')
           toast.success('successfully Logged In!')
          }
          else{
