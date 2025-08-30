@@ -82,7 +82,7 @@ const EmailVerify = () => {
                 onKeyDown={(e)=>handleKeyDown(e, index)}
                 onInput={(e) => handleInput(e, index)}
                 ref={(e) => (inputRefs.current[index] = e)}
-                className="w-12 h-12 bg-[#333A5C] text-white text-center text-xl rounded-md "
+                className="w-12 h-12 bg-[#454e7c] text-white text-center text-xl rounded-md "
                 type="text"
                 maxLength="1"
                 required
