@@ -57,7 +57,7 @@ const Myblogs = () => {
         toast.success('Blog updated successfully!');
         setMyBlogs((prev) =>
           prev.map((b) =>
-            b._id === updateModal.blog._id ? { ...b, ...updated } : b
+            b._id === updateModal.blog._id ? { ...b, ...data.blog } : b
           )
         );
         setUpdateModal({ open: false, blog: null });

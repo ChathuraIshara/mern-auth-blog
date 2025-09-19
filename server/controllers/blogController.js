@@ -1,5 +1,6 @@
 const Blog = require("../models/blogModel");
 const User = require("../models/userModel");
+const axios = require("axios");
 
 const getAllBlogs = async (req, res) => {
   try {
@@ -24,12 +25,19 @@ const addBlogs = async (req, res) => {
   }
   try {
     const { title, content } = req.body;
+    // Call Flask API to predict topic
+    const flaskRes = await axios.post("http://127.0.0.1:5000/predict", {
+      content
+    });
+     // Extract prediction from Flask response
+    const topic = flaskRes.data.prediction;
     const newBlog = new Blog({
       title,
       content,
       author: user.name,
       authorId: userId,
-      category: "General",
+      topic:topic,
+      category: topic // Use predicted topic as category
     });
     await newBlog.save();
     return res.status(201).json({
@@ -79,10 +87,18 @@ const deleteMyBlog = async (req, res) => {
 const updateMyBlog = async (req, res) => {
   const { blogId } = req.params;
   const { title, content } = req.body;
+  
   try {
+    // Call Flask API to predict category based on updated content
+    const flaskRes = await axios.post("http://127.0.0.1:5000/predict", {
+      content
+    });
+    // Extract prediction from Flask response
+    const category = flaskRes.data.prediction;
+    
     const blog = await Blog.findOneAndUpdate(
       { _id: blogId },
-      { title, content },
+      { title, content, category },
       { new: true }
     );
     if (!blog) {
