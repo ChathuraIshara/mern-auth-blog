@@ -75,7 +75,7 @@ const login = async (req, res) => {
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     }); // sets a cookie in the user's browser,stores data (like a token) in the browser for future use.
-    return res.json({ success: true });
+    return res.json({ success: true, role: existinguser.role });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

@@ -28,7 +28,14 @@ const Login = () => {
          {
           setIsLoggedIn(true);
           getUserData();
-          navigate('/All-blogs')
+          if(data.role === 'admin')
+          {
+            navigate('/admin')
+            return;
+          }
+          else{
+            navigate('/All-blogs')
+          }
           toast.success('successfully Logged In!')
          }
          else{
@@ -43,7 +50,14 @@ const Login = () => {
          {
           setIsLoggedIn(true);
           getUserData();
-          navigate('/All-blogs')
+          if(data.role === 'admin')
+          {
+            navigate('/admin')
+            return;
+          }
+          else{
+            navigate('/All-blogs')
+          }
           toast.success('successfully Logged In!')
          }
          else{

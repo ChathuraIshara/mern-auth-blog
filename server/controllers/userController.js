@@ -14,7 +14,8 @@ const getUserData = async (req, res)=>
             message:"User data fetched successfully",
             userData:{
             name:user.name,
-            isAccountVerified:user.isAccountVerified
+            isAccountVerified:user.isAccountVerified,
+            role:user.role,
         }});
 
     }catch(error)
