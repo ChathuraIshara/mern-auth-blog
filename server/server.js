@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser()) //to send cookies as the response of a request
 
-const allowedOrigins = ['https://mern-auth-blog.vercel.app']
+const allowedOrigins = [process.env.FRONTEND_URL]
 app.use(cors({origin: allowedOrigins, credentials:true}))
 
 app.use('/api/auth', authRouter);
