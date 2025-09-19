@@ -96,10 +96,11 @@ const logout = async (req, res) => {
 
 const deleteAllUsers = async (req, res) => {
   try {
-    await User.deleteMany({});
+    // Delete only users with role 'user', preserve admins
+    const result = await User.deleteMany({ role: 'user' });
     return res.json({
       success: true,
-      message: "All users deleted successfully",
+      message: `${result.deletedCount} users deleted successfully (admins preserved)`,
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
