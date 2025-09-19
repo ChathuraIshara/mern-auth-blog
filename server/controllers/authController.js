@@ -167,11 +167,25 @@ const verifyOtp = async (req, res) => {
   }
 };
 
-// Check suer is authenticated
+// Check user is authenticated
 const isAuthenticated = async (req, res) =>
 {
   try{
-    return res.status(200).json({ success: true, message: "User is authenticated" });
+    const { userId } = req.body;
+    const user = await User.findById(userId).select('-password -resetOtp -verifyOtp');
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    return res.status(200).json({ 
+      success: true, 
+      message: "User is authenticated",
+      userData: {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isAccountVerified: user.isAccountVerified
+      }
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
