@@ -26,7 +26,7 @@ const addBlogs = async (req, res) => {
   try {
     const { title, content } = req.body;
     // Call Flask API to predict topic
-    const flaskRes = await axios.post("http://127.0.0.1:5000/predict", {
+    const flaskRes = await axios.post(process.env.FLASK_URL, {
       content
     });
      // Extract prediction from Flask response
@@ -90,7 +90,7 @@ const updateMyBlog = async (req, res) => {
   
   try {
     // Call Flask API to predict category based on updated content
-    const flaskRes = await axios.post("http://127.0.0.1:5000/predict", {
+    const flaskRes = await axios.post(process.env.FLASK_URL, {
       content
     });
     // Extract prediction from Flask response
